@@ -9,7 +9,6 @@
 :root{--gold:#c9a84c;--gold-light:#f0d080;--dark:#1a1008;--cream:#fdf6e3}
 *{box-sizing:border-box;margin:0;padding:0}
 body{min-height:100vh;background:var(--dark);font-family:'Lato',sans-serif;color:var(--cream)}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,.1) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(139,26,26,.1) 0%,transparent 50%);pointer-events:none}
 .container{max-width:760px;margin:0 auto;padding:16px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ornament{color:var(--gold);font-size:1.6rem;opacity:.6;letter-spacing:8px;text-align:center;margin:6px 0}
 #screen-welcome{text-align:center;width:100%}
@@ -24,7 +23,7 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.6rem);font-
 .name-section label{display:block;font-family:'Playfair Display',serif;color:var(--gold-light);font-size:1rem;margin-bottom:8px}
 .name-input{width:100%;padding:12px 16px;font-family:'Playfair Display',serif;font-size:1.1rem;background:rgba(42,30,10,.9);border:2px solid rgba(201,168,76,.4);border-radius:8px;color:var(--cream);outline:none;text-align:center}
 .name-input:focus{border-color:var(--gold)}
-.btn-start{margin-top:14px;width:100%;padding:14px;background:linear-gradient(135deg,#c9a84c,#8b6914,#c9a84c);background-size:200%;border:none;border-radius:8px;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--dark);cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:opacity .2s}
+.btn-start{margin-top:14px;width:100%;padding:14px;background:linear-gradient(135deg,#c9a84c,#8b6914,#c9a84c);border:none;border-radius:8px;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--dark);cursor:pointer;letter-spacing:2px;text-transform:uppercase}
 .btn-start:hover{opacity:.85}
 #screen-game{width:100%;display:none}
 .progress-bar{width:100%;background:rgba(255,255,255,.1);border-radius:50px;height:5px;margin-bottom:14px;overflow:hidden}
@@ -61,15 +60,14 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.6rem);font-
   <div class="ornament">&#10022; &#10022; &#10022;</div>
   <h1>Les Odyssees<br>a Versailles</h1>
   <p class="subtitle">Louis XIV et les Plaisirs de l ile enchantee</p>
-  <div class="ornament">&#9884; &#9884; &#9884;</div>
   <div class="rules-box">
     <h2>Regles du jeu</h2>
     <ul>
-      <li>Ecoute le podcast avant de jouer</li>
-      <li>10 questions sur Louis XIV et Versailles</li>
-      <li>Clique sur la bonne reponse parmi 4 propositions</li>
-      <li>Une bonne reponse = 1 point</li>
-      <li>Ton score sera enregistre a la fin</li>
+      <li>Ecoute le podcast avant de jouer !</li>
+      <li>10 questions sur Louis XIV et Versailles.</li>
+      <li>Clique sur la bonne reponse parmi 4 propositions.</li>
+      <li>Une bonne reponse = 1 point.</li>
+      <li>Ton score sera enregistre a la fin.</li>
     </ul>
   </div>
   <div class="name-section">
@@ -98,8 +96,8 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.6rem);font-
 </div>
 </div>
 <script>
-var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw3vw4Z1WrFpj17o5qE4vihb-lEHI1wJttgOcU62O0zRIx24PR9iF-anGGjyQdbkNNX/exec';
-var questions = [
+var SCRIPT_URL='https://script.google.com/macros/s/AKfycbw3vw4Z1WrFpj17o5qE4vihb-lEHI1wJttgOcU62O0zRIx24PR9iF-anGGjyQdbkNNX/exec';
+var questions=[
   {q:"En quelle annee Louis XIV organise la fete des Plaisirs de l ile enchantee ?",a:["1664","1682","1715","1643"],c:0},
   {q:"Ou se deroule cette grande fete organisee par Louis XIV ?",a:["Au Louvre a Paris","Dans les jardins de Versailles","Au palais de Fontainebleau","A Lyon"],c:1},
   {q:"Quel age avait environ Louis XIV lors de cette fete en 1664 ?",a:["15 ans","25 ans","35 ans","45 ans"],c:1},
@@ -108,7 +106,7 @@ var questions = [
   {q:"Le chateau de Versailles est situe pres de quelle ville ?",a:["Lyon","Bordeaux","Paris","Nantes"],c:2},
   {q:"Louis XIV fait construire Versailles pour montrer quoi ?",a:["Sa collection de tableaux","Sa puissance et sa richesse","Son armee invincible","Ses jardins potagers"],c:1},
   {q:"Qui raconte ce podcast des Odyssees ?",a:["Laure Grandbesancon","Marie Curie","Anne-Sophie Pic","Charlotte Gainsbourg"],c:0},
-  {q:"La fete a Versailles comportait des spectacles de la musique et aussi des... ?",a:["Matchs de football","Feux d artifice et banquets","Courses de chevaux","Examens pour les courtisans"],c:1},
+  {q:"La fete a Versailles comportait des spectacles de la musique et des... ?",a:["Matchs de football","Feux d artifice et banquets","Courses de chevaux","Examens pour les courtisans"],c:1},
   {q:"Les Odyssees est un podcast destine aux enfants de quel age ?",a:["3 a 6 ans","7 a 12 ans","12 a 16 ans","Tous les ages"],c:1}
 ];
 var currentQ=0,score=0,playerName='',answered=false;
@@ -153,7 +151,8 @@ function selectAnswer(btn,index){
 function showResult(){
   document.getElementById('screen-game').style.display='none';
   document.getElementById('screen-result').style.display='block';
-  var pct=score/10;var emoji,msg;
+  var pct=score/10;
+  var emoji,msg;
   if(pct===1){emoji='&#128081;';msg='Parfait ! Tu es digne de Versailles !';}
   else if(pct>=.8){emoji='&#127942;';msg='Excellent ! Louis XIV t aurait invite a sa fete !';}
   else if(pct>=.6){emoji='&#11088;';msg='Bien joue ! Tu connais bien Versailles.';}
@@ -164,8 +163,7 @@ function showResult(){
   document.getElementById('resultScore').textContent=score;
   document.getElementById('resultTotal').textContent='/ 10';
   document.getElementById('resultMsg').innerHTML=msg;
-  var now=new Date().toLocaleString('fr-FR');
-  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({name:playerName,score:score,total:10,date:now}),headers:{'Content-Type':'application/json'}})
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({name:playerName,score:score,total:10,date:new Date().toLocaleString('fr-FR')}),headers:{'Content-Type':'application/json'}})
     .then(function(){document.getElementById('savingMsg').textContent='Score enregistre !';})
     .catch(function(){document.getElementById('savingMsg').textContent='';});
 }
