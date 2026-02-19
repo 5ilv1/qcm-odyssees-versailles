@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Les Odyssees - Louis XIV a Versailles</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#c9a84c;--gold-light:#f0d080;--dark:#1a1008;--cream:#fdf6e3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--dark);font-family:'Lato',sans-serif;color:var(--cream)}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,.1) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(139,26,26,.1) 0%,transparent 50%);pointer-events:none}
+.container{max-width:760px;margin:0 auto;padding:16px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ornament{color:var(--gold);font-size:1.6rem;opacity:.6;letter-spacing:8px;text-align:center;margin:6px 0}
+#screen-welcome{text-align:center;width:100%}
+.crown{font-size:3.5rem;margin-bottom:6px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.6rem);font-weight:900;color:var(--gold-light);line-height:1.2;margin-bottom:4px}
+.subtitle{font-family:'Playfair Display',serif;font-size:clamp(.85rem,2vw,1.05rem);color:rgba(253,246,227,.7);font-style:italic;margin-bottom:16px}
+.rules-box{background:rgba(42,30,10,.8);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:14px 20px;margin:12px 0;text-align:left}
+.rules-box h2{font-family:'Playfair Display',serif;color:var(--gold);font-size:1rem;margin-bottom:8px;text-align:center;letter-spacing:2px;text-transform:uppercase}
+.rules-box li{padding:3px 0 3px 18px;position:relative;font-size:.9rem;color:rgba(253,246,227,.85);line-height:1.4;list-style:none}
+.rules-box li::before{content:">";position:absolute;left:0;color:var(--gold)}
+.name-section{margin-top:16px;width:100%}
+.name-section label{display:block;font-family:'Playfair Display',serif;color:var(--gold-light);font-size:1rem;margin-bottom:8px}
+.name-input{width:100%;padding:12px 16px;font-family:'Playfair Display',serif;font-size:1.1rem;background:rgba(42,30,10,.9);border:2px solid rgba(201,168,76,.4);border-radius:8px;color:var(--cream);outline:none;text-align:center}
+.name-input:focus{border-color:var(--gold)}
+.btn-start{margin-top:14px;width:100%;padding:14px;background:linear-gradient(135deg,#c9a84c,#8b6914,#c9a84c);background-size:200%;border:none;border-radius:8px;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--dark);cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:opacity .2s}
+.btn-start:hover{opacity:.85}
+#screen-game{width:100%;display:none}
+.progress-bar{width:100%;background:rgba(255,255,255,.1);border-radius:50px;height:5px;margin-bottom:14px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:50px;transition:width .5s ease}
+.score-display{text-align:right;font-family:'Playfair Display',serif;color:var(--gold);font-size:.9rem;margin-bottom:10px}
+.question-count{font-family:'Playfair Display',serif;color:rgba(253,246,227,.5);font-size:.8rem;text-align:center;margin-bottom:10px;letter-spacing:3px;text-transform:uppercase}
+.question-box{background:rgba(42,30,10,.85);border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:20px;margin-bottom:16px;min-height:100px;display:flex;align-items:center;justify-content:center}
+.question-text{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.8vw,1.3rem);font-weight:700;color:var(--cream);text-align:center;line-height:1.5}
+.answers-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.answer-btn{padding:14px 12px;background:rgba(42,30,10,.7);border:2px solid rgba(201,168,76,.2);border-radius:10px;font-family:'Lato',sans-serif;font-size:clamp(.85rem,2.2vw,1rem);color:var(--cream);cursor:pointer;text-align:center;min-height:64px;display:flex;align-items:center;justify-content:center;line-height:1.3;transition:border-color .15s,background .15s}
+.answer-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.12)}
+.answer-btn.correct{border-color:#4caf50;background:rgba(76,175,80,.2);color:#a5d6a7}
+.answer-btn.wrong{border-color:#e53935;background:rgba(229,57,53,.15);color:#ef9a9a}
+.answer-btn.reveal{border-color:#4caf50;background:rgba(76,175,80,.1);color:#a5d6a7}
+.answer-btn:disabled{cursor:default}
+.feedback{text-align:center;margin-top:12px;font-family:'Playfair Display',serif;font-size:1rem;min-height:24px}
+.feedback.good{color:#a5d6a7}
+.feedback.bad{color:#ef9a9a}
+#screen-result{display:none;text-align:center;width:100%}
+.result-crown{font-size:4rem;margin-bottom:6px}
+.result-name{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold-light);margin-bottom:6px}
+.result-score{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;color:var(--gold);margin:12px 0}
+.result-total{font-size:1.3rem;color:rgba(253,246,227,.6)}
+.result-msg{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:rgba(253,246,227,.8);margin:16px 0;padding:12px;border-top:1px solid rgba(201,168,76,.2);border-bottom:1px solid rgba(201,168,76,.2)}
+.saving-msg{font-size:.8rem;color:rgba(253,246,227,.4);margin-top:8px}
+.btn-retry{margin-top:16px;padding:12px 28px;background:transparent;border:2px solid var(--gold);border-radius:8px;font-family:'Playfair Display',serif;font-size:.95rem;color:var(--gold);cursor:pointer;letter-spacing:2px;text-transform:uppercase}
+@media(max-width:480px){.answers-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<div id="screen-welcome">
+  <div class="crown">&#128081;</div>
+  <div class="ornament">&#10022; &#10022; &#10022;</div>
+  <h1>Les Odyssees<br>a Versailles</h1>
+  <p class="subtitle">Louis XIV et les Plaisirs de l ile enchantee</p>
+  <div class="ornament">&#9884; &#9884; &#9884;</div>
+  <div class="rules-box">
+    <h2>Regles du jeu</h2>
+    <ul>
+      <li>Ecoute le podcast avant de jouer</li>
+      <li>10 questions sur Louis XIV et Versailles</li>
+      <li>Clique sur la bonne reponse parmi 4 propositions</li>
+      <li>Une bonne reponse = 1 point</li>
+      <li>Ton score sera enregistre a la fin</li>
+    </ul>
+  </div>
+  <div class="name-section">
+    <label for="playerName">Entre ton prenom :</label>
+    <input type="text" id="playerName" class="name-input" placeholder="Mon prenom..." maxlength="30" autocomplete="off">
+    <button class="btn-start" id="btnStart">Entrer dans le chateau</button>
+  </div>
+</div>
+<div id="screen-game">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="score-display">Score : <span id="scoreDisplay">0</span> / 10</div>
+  <div class="question-count" id="questionCount">Question 1 / 10</div>
+  <div class="question-box"><p class="question-text" id="questionText"></p></div>
+  <div class="answers-grid" id="answersGrid"></div>
+  <div class="feedback" id="feedback"></div>
+</div>
+<div id="screen-result">
+  <div class="result-crown" id="resultEmoji">&#127942;</div>
+  <div class="ornament">&#10022; &#10022; &#10022;</div>
+  <p class="result-name" id="resultName"></p>
+  <div class="result-score" id="resultScore"></div>
+  <div class="result-total" id="resultTotal"></div>
+  <p class="result-msg" id="resultMsg"></p>
+  <p class="saving-msg" id="savingMsg">Enregistrement du score...</p>
+  <button class="btn-retry" onclick="resetGame()">Rejouer</button>
+</div>
+</div>
+<script>
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw3vw4Z1WrFpj17o5qE4vihb-lEHI1wJttgOcU62O0zRIx24PR9iF-anGGjyQdbkNNX/exec';
+var questions = [
+  {q:"En quelle annee Louis XIV organise la fete des Plaisirs de l ile enchantee ?",a:["1664","1682","1715","1643"],c:0},
+  {q:"Ou se deroule cette grande fete organisee par Louis XIV ?",a:["Au Louvre a Paris","Dans les jardins de Versailles","Au palais de Fontainebleau","A Lyon"],c:1},
+  {q:"Quel age avait environ Louis XIV lors de cette fete en 1664 ?",a:["15 ans","25 ans","35 ans","45 ans"],c:1},
+  {q:"Combien de jours a dure la fete des Plaisirs de l ile enchantee ?",a:["1 jour","3 jours","7 jours","15 jours"],c:2},
+  {q:"Quel surnom celebre portait Louis XIV ?",a:["Le Roi Vert","Le Roi Soleil","Le Grand Monarque","Le Roi de Fer"],c:1},
+  {q:"Le chateau de Versailles est situe pres de quelle ville ?",a:["Lyon","Bordeaux","Paris","Nantes"],c:2},
+  {q:"Louis XIV fait construire Versailles pour montrer quoi ?",a:["Sa collection de tableaux","Sa puissance et sa richesse","Son armee invincible","Ses jardins potagers"],c:1},
+  {q:"Qui raconte ce podcast des Odyssees ?",a:["Laure Grandbesancon","Marie Curie","Anne-Sophie Pic","Charlotte Gainsbourg"],c:0},
+  {q:"La fete a Versailles comportait des spectacles de la musique et aussi des... ?",a:["Matchs de football","Feux d artifice et banquets","Courses de chevaux","Examens pour les courtisans"],c:1},
+  {q:"Les Odyssees est un podcast destine aux enfants de quel age ?",a:["3 a 6 ans","7 a 12 ans","12 a 16 ans","Tous les ages"],c:1}
+];
+var currentQ=0,score=0,playerName='',answered=false;
+document.getElementById('btnStart').addEventListener('click',startGame);
+document.getElementById('playerName').addEventListener('keydown',function(e){if(e.key==='Enter')startGame();});
+function startGame(){
+  var val=document.getElementById('playerName').value.trim();
+  if(!val){document.getElementById('playerName').style.borderColor='#e53935';setTimeout(function(){document.getElementById('playerName').style.borderColor='';},1200);return;}
+  playerName=val;currentQ=0;score=0;answered=false;
+  document.getElementById('screen-welcome').style.display='none';
+  document.getElementById('screen-game').style.display='block';
+  loadQuestion();
+}
+function loadQuestion(){
+  answered=false;
+  var q=questions[currentQ];
+  document.getElementById('questionCount').textContent='Question '+(currentQ+1)+' / 10';
+  document.getElementById('scoreDisplay').textContent=score;
+  document.getElementById('progressFill').style.width=(currentQ/10*100)+'%';
+  document.getElementById('questionText').textContent=q.q;
+  document.getElementById('feedback').textContent='';
+  document.getElementById('feedback').className='feedback';
+  var grid=document.getElementById('answersGrid');
+  grid.innerHTML='';
+  var idx=[0,1,2,3].sort(function(){return Math.random()-.5;});
+  idx.forEach(function(i){
+    var btn=document.createElement('button');
+    btn.className='answer-btn';btn.textContent=q.a[i];btn.dataset.idx=i;
+    btn.addEventListener('click',function(){selectAnswer(btn,i);});
+    grid.appendChild(btn);
+  });
+}
+function selectAnswer(btn,index){
+  if(answered)return;answered=true;
+  var q=questions[currentQ];
+  document.querySelectorAll('.answer-btn').forEach(function(b){b.disabled=true;});
+  if(index===q.c){btn.classList.add('correct');score++;document.getElementById('feedback').textContent='Bravo, bonne reponse !';document.getElementById('feedback').className='feedback good';}
+  else{btn.classList.add('wrong');document.querySelectorAll('.answer-btn').forEach(function(b){if(parseInt(b.dataset.idx)===q.c)b.classList.add('reveal');});document.getElementById('feedback').textContent='Rate ! La bonne reponse est en vert.';document.getElementById('feedback').className='feedback bad';}
+  document.getElementById('scoreDisplay').textContent=score;
+  setTimeout(function(){currentQ++;if(currentQ<10)loadQuestion();else showResult();},1800);
+}
+function showResult(){
+  document.getElementById('screen-game').style.display='none';
+  document.getElementById('screen-result').style.display='block';
+  var pct=score/10;var emoji,msg;
+  if(pct===1){emoji='&#128081;';msg='Parfait ! Tu es digne de Versailles !';}
+  else if(pct>=.8){emoji='&#127942;';msg='Excellent ! Louis XIV t aurait invite a sa fete !';}
+  else if(pct>=.6){emoji='&#11088;';msg='Bien joue ! Tu connais bien Versailles.';}
+  else if(pct>=.4){emoji='&#128220;';msg='Pas mal, reecoute le podcast pour t ameliorer !';}
+  else{emoji='&#127917;';msg='Continue d ecouter les Odyssees, tu progresseras !';}
+  document.getElementById('resultEmoji').innerHTML=emoji;
+  document.getElementById('resultName').textContent=playerName;
+  document.getElementById('resultScore').textContent=score;
+  document.getElementById('resultTotal').textContent='/ 10';
+  document.getElementById('resultMsg').innerHTML=msg;
+  var now=new Date().toLocaleString('fr-FR');
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({name:playerName,score:score,total:10,date:now}),headers:{'Content-Type':'application/json'}})
+    .then(function(){document.getElementById('savingMsg').textContent='Score enregistre !';})
+    .catch(function(){document.getElementById('savingMsg').textContent='';});
+}
+function resetGame(){
+  document.getElementById('screen-result').style.display='none';
+  document.getElementById('screen-welcome').style.display='block';
+  document.getElementById('playerName').value='';
+}
+</script>
+</body>
+</html>
