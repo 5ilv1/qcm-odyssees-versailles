@@ -163,7 +163,7 @@ function showResult(){
   document.getElementById('resultScore').textContent=score;
   document.getElementById('resultTotal').textContent='/ 10';
   document.getElementById('resultMsg').innerHTML=msg;
-  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({name:playerName,score:score,total:10,date:new Date().toLocaleString('fr-FR')}),headers:{'Content-Type':'application/json'}})
+  fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body: JSON.stringify({name:playerName,score:score,total:10,date:now,episode:'Ep.1 - Plaisirs ile enchantee'}),headers:{'Content-Type':'application/json'}})
     .then(function(){document.getElementById('savingMsg').textContent='Score enregistre !';})
     .catch(function(){document.getElementById('savingMsg').textContent='';});
 }
